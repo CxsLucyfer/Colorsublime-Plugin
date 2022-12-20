@@ -1,12 +1,12 @@
 """
 Collection of functions the plugin can invoke. Most if not all should be
-non-blocking (@async) functions to keep the main UI thread from freezing.
+non-blocking (@runasync) functions to keep the main UI thread from freezing.
 
 These functions should catch all unexpected exceptions so the plugin does not
 have to. Unexpected exceptions should return False. Expected exceptions should
 be caught by other modules this module uses. Log all unusual behavior.
 
-All @async functions have an optional callback parameter as the last argument.
+All @runasync functions have an optional callback parameter as the last argument.
 """
 import os
 
@@ -14,7 +14,7 @@ from . import logger
 from . import settings
 from . import http
 from . import io
-from .async import async
+from .asynclib import runasync
 from .theme import Theme
 
 log = logger.get(__name__)
@@ -37,7 +37,7 @@ def get_installed_themes():
     return themes
 
 
-@async
+@runasync
 def fetch_repo():
     """ Get current theme archive in a new thread """
     archive = http.get(settings.repo_url())
@@ -71,9 +71,7 @@ def install_theme(theme):
         return
 
     io.copy(theme.cache_path.abs, theme.install_path.abs)
-    settings.set_theme(theme.install_path.rel)
-    settings.commit()
-
+    settings.commit_theme(theme.install_path.rel)
 
 def revert_theme(path):
     log.debug('Reverting theme at path %s', path)

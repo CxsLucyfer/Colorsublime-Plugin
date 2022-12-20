@@ -92,7 +92,7 @@ class Loader(Message):
 
     def _get_message(self):
         mod = len(self.chars)
-        rands = [self.chars[x % mod] for x in random.sample(range(100), 10)]
+        rands = [self.chars[x % mod] for x in random.sample(range(100), 1)]
         msg = self.message + ' [' + ''.join(rands) + '] '
         return msg
 

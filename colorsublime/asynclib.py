@@ -13,20 +13,20 @@ def _is_function(fn):
     return hasattr(fn, '__call__')
 
 
-def async(fn):
+def runasync(fn):
     """ Decorator for running functions asynchronously.
     Async functions can have a callback as the
     last argument. Returns False if uncaught exception.
 
     e.x. no callback:
-    @async
+    @runasync
     def no_callback(arg):
         chage_some_state(arg)
 
     no_callback(2)
 
     or has callback:
-    @async
+    @runasync
     def has_callback(arg):
         return arg*2
 

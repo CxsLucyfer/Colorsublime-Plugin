@@ -47,8 +47,12 @@ def set_theme(path):
     return sublime.load_settings(SUBLIME_PREF).set('color_scheme', path)
 
 
-def commit():
-    sublime.save_settings(SUBLIME_PREF)
+def commit_theme(path):
+    def callback():
+        set_theme(path)
+        sublime.save_settings(SUBLIME_PREF)
+    # Timeout so sublime can get caught up with the filesystem
+    sublime.set_timeout_async(callback, 1000)
 
 
 def is_debug():

@@ -28,8 +28,8 @@ class UrllibDownloader(DownloaderBase):
             result = request.urlopen(url)
         except error.URLError as e:
             log.error('Urllib downloader failed: %s' % e.reason)
-            traceback.print_exc()
-            result = b''
+            raise e
         if result.getcode() >= 400:
+            log.error('Urllib downloader failed with code: %s' % result.getcode())
             return b''
         return result.read()
